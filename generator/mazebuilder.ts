@@ -1,5 +1,5 @@
 import { display } from "./index";
-import { Basic, WallH, WallV, Floor } from "../domain";
+import { Basic, WallH, WallV, Floor, Spawn } from "../domain";
 
 export class MazeBuilder {
 
@@ -32,6 +32,11 @@ export class MazeBuilder {
             const line = lines[i];
 
             x = Math.round(-this.width * 6 / 2);
+
+            if (i == 1) {
+                const spawn = new Spawn(x, y - 3);
+                result.push(spawn);
+            }
 
             for (let j = 0; j < line.length - 1; j = j + 4) {
                 if (i % 2 == 0) {

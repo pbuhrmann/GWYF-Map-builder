@@ -22,6 +22,10 @@ var MazeBuilder = (function () {
         for (var i = 0; i < lines.length - 1; i++) {
             var line = lines[i];
             x = Math.round(-this.width * 6 / 2);
+            if (i == 1) {
+                var spawn = new domain_1.Spawn(x, y - 3);
+                result.push(spawn);
+            }
             for (var j = 0; j < line.length - 1; j = j + 4) {
                 if (i % 2 == 0) {
                     var sub = line.substr(j, 5);
