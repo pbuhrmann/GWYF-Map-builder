@@ -3,51 +3,56 @@ exports.__esModule = true;
 var index_1 = require("./index");
 var domain_1 = require("../domain");
 var MazeBuilder = (function () {
-    function MazeBuilder() {
+    function MazeBuilder(name, width, height) {
+        this.name = name;
+        this.width = width;
+        this.height = height;
     }
-    MazeBuilder.prototype.build = function (name, width, height) {
-        var m = this.generateMaze(30, 30);
+    MazeBuilder.prototype.build = function () {
+        var m = this.generateMaze(this.width, this.height);
         console.log(this.generateDisplay(m));
         var generated_map = this.generateFromDisplay(index_1.display(m));
-        return "{\"levelName\": \"" + name + "\",\"description\": \"Auto-generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
+        return "{\"levelName\": \"" + this.name + "\",\"description\": \"Auto-generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
     };
     MazeBuilder.prototype.generateFromDisplay = function (display) {
         var result = [];
         var lines = display.split('\r\n');
-        var wall_x = 0;
-        var wall_y = 0;
-        for (var i = 0; i < lines.length; i++) {
+        var x = Math.floor(-this.width * 6 / 2);
+        var y = Math.floor(this.height * 6 / 2);
+        for (var i = 0; i < lines.length - 1; i++) {
             var line = lines[i];
-            wall_x = 0;
+            x = Math.round(-this.width * 6 / 2);
             for (var j = 0; j < line.length - 1; j = j + 4) {
                 if (i % 2 == 0) {
                     var sub = line.substr(j, 5);
                     if (sub == '+---+') {
-                        var wall = new domain_1.WallH(wall_x, wall_y + 3);
+                        var wall = new domain_1.WallH(x, y - 3);
                         result.push(wall);
                     }
-                    var floor = new domain_1.Floor(wall_x, wall_y);
-                    result.push(floor);
+                    if (i > 0) {
+                        var floor = new domain_1.Floor(x, y);
+                        result.push(floor);
+                    }
                 }
                 else {
                     var sub = line.substr(j, 5);
                     if (sub == '|###|') {
-                        var wall1 = new domain_1.WallV(wall_x - 3, wall_y + 3);
-                        var wall2 = new domain_1.WallV(wall_x + 3, wall_y + 3);
+                        var wall1 = new domain_1.WallV(x - 3, y - 3);
+                        var wall2 = new domain_1.WallV(x + 3, y - 3);
                         result.push(wall1, wall2);
                     }
                     else if (sub == '|####') {
-                        var wall = new domain_1.WallV(wall_x - 3, wall_y + 3);
+                        var wall = new domain_1.WallV(x - 3, y - 3);
                         result.push(wall);
                     }
                     else if (sub == '####|') {
-                        var wall = new domain_1.WallV(wall_x + 3, wall_y + 3);
+                        var wall = new domain_1.WallV(x + 3, y - 3);
                         result.push(wall);
                     }
                 }
-                wall_x += 6;
+                x += 6;
             }
-            wall_y += 3;
+            y -= 3;
         }
         return result.join(',');
     };

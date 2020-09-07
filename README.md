@@ -2,7 +2,12 @@
 
 Generate a random maze
 
-## How to run
+## How to compile
 ```
 npm start
+```
+
+## How to generate a map
+```
+node index.js
 ```

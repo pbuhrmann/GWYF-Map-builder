@@ -3,59 +3,71 @@ import { Basic, WallH, WallV, Floor } from "../domain";
 
 export class MazeBuilder {
 
-    public build(name: string, width: number, height: number) {
-        const m = this.generateMaze(30, 30);
+    private width: number;
+    private height: number;
+    private name: string;
+
+    constructor(name: string, width: number, height: number) {
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    }
+
+    public build() {
+        const m = this.generateMaze(this.width, this.height);
         console.log(this.generateDisplay(m));
         const generated_map = this.generateFromDisplay(display(m));
 
-        return `{"levelName": "${name}","description": "Auto-generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [${generated_map}]}`;
+        return `{"levelName": "${this.name}","description": "Auto-generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [${generated_map}]}`;
     }
 
     generateFromDisplay(display: string) {
         const result: Basic[] = [];
         const lines = display.split('\r\n');
 
-        let wall_x = 0;
-        let wall_y = 0;
+        let x = Math.floor(-this.width * 6 / 2);
+        let y = Math.floor(this.height * 6 / 2);
 
-        for (let i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length - 1; i++) {
             const line = lines[i];
 
-            wall_x = 0;
+            x = Math.round(-this.width * 6 / 2);
 
             for (let j = 0; j < line.length - 1; j = j + 4) {
                 if (i % 2 == 0) {
                     const sub = line.substr(j, 5);
 
                     if (sub == '+---+') {
-                        const wall = new WallH(wall_x, wall_y + 3);
+                        const wall = new WallH(x, y - 3);
                         result.push(wall);
                     }
-                    
-                    const floor = new Floor(wall_x, wall_y);
-                    result.push(floor);
+
+                    if (i > 0) {
+                        const floor = new Floor(x, y);
+                        result.push(floor);
+                    }
                 }
                 else {
                     const sub = line.substr(j, 5);
 
                     if (sub == '|###|') {
-                        const wall1 = new WallV(wall_x - 3, wall_y + 3);
-                        const wall2 = new WallV(wall_x + 3, wall_y + 3);
+                        const wall1 = new WallV(x - 3, y - 3);
+                        const wall2 = new WallV(x + 3, y - 3);
                         result.push(wall1, wall2);
                     }
                     else if (sub == '|####') {
-                        const wall = new WallV(wall_x - 3, wall_y + 3);
+                        const wall = new WallV(x - 3, y - 3);
                         result.push(wall);
                     }
                     else if (sub == '####|') {
-                        const wall = new WallV(wall_x + 3, wall_y + 3);
+                        const wall = new WallV(x + 3, y - 3);
                         result.push(wall);
                     }
-                }                
-                wall_x += 6;
+                }
+                x += 6;
 
             }
-            wall_y += 3;
+            y -= 3;
         }
 
         return result.join(',');
