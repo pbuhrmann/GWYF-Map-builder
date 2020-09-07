@@ -1,0 +1,79 @@
+{
+    "levelName": "Maze I",
+    "description": "Auto-generated maze",
+    "publishedID": 0,
+    "music": 8,
+    "skybox": 9,
+    "editorObjectData": [
+        {
+            "sType": 0,
+            "pX": 0.0,
+            "pY": 4.0,
+            "pZ": 0.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "6x6_Base_Space",
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 0,
+            "pX": 0.0,
+            "pY": 4.0,
+            "pZ": 3.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "Wall_1x6_Space",
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 0,
+            "pX": 3.0004,
+            "pY": 4.0,
+            "pZ": 0.0,
+            "rW": 0.7071,
+            "rX": 0.0,
+            "rY": 0.7071,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "Wall_1x6_Space",
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 4,
+            "pX": 0.0,
+            "pY": 4.0,
+            "pZ": 0.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "SingleSpawn",
+            "spawnName": "Spawn 1",
+            "par": 1,
+            "photonData": {
+                "photonViewID": []
+            }
+        }
+    ]
+}
