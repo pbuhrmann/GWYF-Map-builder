@@ -7,6 +7,23 @@
     "editorObjectData": [
         {
             "sType": 0,
+            "pX": 3.0,
+            "pY": 4.0,
+            "pZ": 0.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "FlipGate",
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 0,
             "pX": 0.0,
             "pY": 4.0,
             "pZ": 0.0,
@@ -18,6 +35,23 @@
             "sY": 1.0,
             "sZ": 1.0,
             "obName": "6x6_Base_Space",
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 0,
+            "pX": 6.0,
+            "pY": 4.0,
+            "pZ": 0.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "6x6HoleIndent_Base_Space",
             "photonData": {
                 "photonViewID": []
             }
@@ -41,7 +75,7 @@
         },
         {
             "sType": 0,
-            "pX": 3.0004,
+            "pX": -3.0,
             "pY": 4.0,
             "pZ": 0.0,
             "rW": 0.7071,
@@ -71,6 +105,23 @@
             "obName": "SingleSpawn",
             "spawnName": "Spawn 1",
             "par": 1,
+            "photonData": {
+                "photonViewID": []
+            }
+        },
+        {
+            "sType": 0,
+            "pX": 6.0,
+            "pY": 3.0,
+            "pZ": 0.0,
+            "rW": 1.0,
+            "rX": 0.0,
+            "rY": 0.0,
+            "rZ": 0.0,
+            "sX": 1.0,
+            "sY": 1.0,
+            "sZ": 1.0,
+            "obName": "FlagPole_Oasis",
             "photonData": {
                 "photonViewID": []
             }
