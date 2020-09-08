@@ -11,3 +11,8 @@ npm start
 ```
 node index.js
 ```
+
+## Custom Maps Location
+```
+C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\CustomLevels
+```
