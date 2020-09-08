@@ -1,9 +1,9 @@
 "use strict";
 exports.__esModule = true;
-var index_1 = require("./index");
 var domain_1 = require("../domain");
 var MazeBuilder = (function () {
     function MazeBuilder(name, width, height) {
+        this.min_height = -240;
         this.name = name;
         this.width = width;
         this.height = height;
@@ -11,52 +11,86 @@ var MazeBuilder = (function () {
     MazeBuilder.prototype.build = function () {
         var m = this.generateMaze(this.width, this.height);
         console.log(this.generateDisplay(m));
-        var generated_map = this.generateFromDisplay(index_1.display(m));
-        return "{\"levelName\": \"" + this.name + "\",\"description\": \"Auto-generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
+        var generated_map = this.generateFromDisplay(this.generateDisplay(m));
+        return "{\"levelName\": \"" + this.name + "\",\"description\": \"Automatically generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
     };
-    MazeBuilder.prototype.generateFromDisplay = function (display) {
+    MazeBuilder.prototype.buildMultiple = function (holes_total) {
+        var real_width = this.width * 6;
+        var real_height = this.height * 6;
+        var generated_map = '';
+        this.x = -240;
+        this.y = 250;
+        for (var i = 0; i < holes_total; i++) {
+            var m = this.generateMaze(this.width, this.height);
+            console.log(this.generateDisplay(m));
+            generated_map += this.generateFromDisplay(this.generateDisplay(m), this.x, this.y);
+            this.y += real_height + 3;
+            this.x += 3;
+            if (this.x + real_width > 240) {
+                this.x = -240;
+                this.y = this.y - real_height - 3;
+            }
+            if (this.y - real_height < this.min_height) {
+                break;
+            }
+            if (i < holes_total - 1) {
+                generated_map += ',';
+            }
+        }
+        return "{\"levelName\": \"" + this.name + "\",\"description\": \"Automatically generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
+    };
+    MazeBuilder.prototype.generateFromDisplay = function (display, x, y) {
         var result = [];
         var lines = display.split('\r\n');
-        var x = Math.floor(-this.width * 6 / 2);
-        var y = Math.floor(this.height * 6 / 2);
+        this.x = x !== undefined ? x : Math.floor(-this.width * 6 / 2);
+        this.y = y !== undefined ? y : Math.floor(this.height * 6 / 2);
         for (var i = 0; i < lines.length - 1; i++) {
             var line = lines[i];
-            x = Math.round(-this.width * 6 / 2);
+            this.x = x !== undefined ? x : Math.round(-this.width * 6 / 2);
             if (i == 1) {
-                var spawn = new domain_1.Spawn(x, y - 3);
+                var spawn = new domain_1.Spawn(this.x, this.y - 3);
                 result.push(spawn);
             }
             for (var j = 0; j < line.length - 1; j = j + 4) {
                 if (i % 2 == 0) {
                     var sub = line.substr(j, 5);
                     if (sub == '+---+') {
-                        var wall = new domain_1.WallH(x, y - 3);
+                        var wall = new domain_1.WallH(this.x, this.y - 3);
                         result.push(wall);
                     }
-                    if (i > 0) {
-                        var floor = new domain_1.Floor(x, y);
+                    else if (sub == '+###+') {
+                    }
+                    if (i == lines.length - 2 && j == line.length - 5) {
+                        var hole = new domain_1.HoleIndent(this.x, this.y);
+                        var flagpole = new domain_1.Flagpole(this.x, this.y);
+                        result.push(hole, flagpole);
+                    }
+                    else if (i > 0) {
+                        var floor = new domain_1.Floor(this.x, this.y);
                         result.push(floor);
                     }
                 }
                 else {
                     var sub = line.substr(j, 5);
                     if (sub == '|###|') {
-                        var wall1 = new domain_1.WallV(x - 3, y - 3);
-                        var wall2 = new domain_1.WallV(x + 3, y - 3);
+                        var wall1 = new domain_1.WallV(this.x - 3, this.y - 3);
+                        var wall2 = new domain_1.WallV(this.x + 3, this.y - 3);
                         result.push(wall1, wall2);
                     }
                     else if (sub == '|####') {
-                        var wall = new domain_1.WallV(x - 3, y - 3);
+                        var wall = new domain_1.WallV(this.x - 3, this.y - 3);
                         result.push(wall);
                     }
                     else if (sub == '####|') {
-                        var wall = new domain_1.WallV(x + 3, y - 3);
+                        var wall = new domain_1.WallV(this.x + 3, this.y - 3);
                         result.push(wall);
                     }
+                    else if (sub == '#####') {
+                    }
                 }
-                x += 6;
+                this.x += 6;
             }
-            y -= 3;
+            this.y -= 3;
         }
         return result.join(',');
     };
@@ -124,10 +158,6 @@ var MazeBuilder = (function () {
                             line[k] = '|';
                     else
                         line[k] = '#';
-            if (0 == j)
-                line[1] = line[2] = line[3] = '#';
-            if (m.x * 2 - 1 == j)
-                line[4 * m.y] = '#';
             text.push(line.join('') + '\r\n');
         }
         return text.join('');
