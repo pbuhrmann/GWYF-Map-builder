@@ -9,7 +9,8 @@ var height = args[2] ? args[2] : "8";
 var holes = args[3] ? args[3] : "18";
 var home_location = process.env.HOME || process.env.USERPROFILE;
 var mazebuilder = new generator_1.MazeBuilder(name, parseInt(width), parseInt(height));
-fs.writeFileSync('Map', mazebuilder.build());
+var custom = fs.readFileSync('CustomMap.txt', 'utf8');
+fs.writeFileSync('Map', mazebuilder.buildFromFile(custom));
 fs.copyFile('Map', home_location + "/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friends/CustomLevels/" + name + "/Map", function (err) {
     if (err)
         throw err;

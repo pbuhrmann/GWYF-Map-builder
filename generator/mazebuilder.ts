@@ -51,7 +51,7 @@ export class MazeBuilder {
                 this.y = this.y - real_height - 3;
             }
 
-            if(this. y - real_height < this.min_height){
+            if (this.y - real_height < this.min_height) {
                 break;
             }
 
@@ -63,10 +63,21 @@ export class MazeBuilder {
         return `{"levelName": "${this.name}","description": "Automatically generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [${generated_map}]}`;
     }
 
+    public buildFromFile(map: string) {
+        this.width = (map.indexOf('\n') - 2) / 4;
+        this.height = (map.split('\n').length - 1) / 2;
+
+        console.log(map.indexOf('\n'), this.width);
+        console.log(map.split('\n').length, this.height);
+        console.log(map);
+        const generated_map = this.generateFromDisplay(map);
+        return `{"levelName": "${this.name}","description": "Automatically generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [${generated_map}]}`;
+    }
+
     generateFromDisplay(display: string, x?: number, y?: number) {
         const result: Basic[] = [];
         const lines = display.split('\r\n');
-
+        
         this.x = x !== undefined ? x : Math.floor(-this.width * 6 / 2);
         this.y = y !== undefined ? y : Math.floor(this.height * 6 / 2);
 

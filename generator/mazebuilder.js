@@ -39,6 +39,15 @@ var MazeBuilder = (function () {
         }
         return "{\"levelName\": \"" + this.name + "\",\"description\": \"Automatically generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
     };
+    MazeBuilder.prototype.buildFromFile = function (map) {
+        this.width = (map.indexOf('\n') - 2) / 4;
+        this.height = (map.split('\n').length - 1) / 2;
+        console.log(map.indexOf('\n'), this.width);
+        console.log(map.split('\n').length, this.height);
+        console.log(map);
+        var generated_map = this.generateFromDisplay(map);
+        return "{\"levelName\": \"" + this.name + "\",\"description\": \"Automatically generated maze\",\"publishedID\": 0,\"music\": 8,\"skybox\": 9,\"editorObjectData\": [" + generated_map + "]}";
+    };
     MazeBuilder.prototype.generateFromDisplay = function (display, x, y) {
         var result = [];
         var lines = display.split('\r\n');
