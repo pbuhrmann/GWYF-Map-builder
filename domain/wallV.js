@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var basic_1 = require("./basic");
+var config_1 = require("../config");
 var WallV = (function (_super) {
     __extends(WallV, _super);
     function WallV(x, y) {
@@ -26,7 +27,7 @@ var WallV = (function (_super) {
         return _this;
     }
     WallV.prototype.toString = function () {
-        return "{\"sType\": 0,\"pX\": " + this.pX.toFixed(1) + ",\"pY\": 4.0,\"pZ\": " + this.pZ.toFixed(1) + ",\"rW\": 0.7071,\"rX\": 0.0,\"rY\": 0.7071,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"Wall_1x6_Space\",\"photonData\": {\"photonViewID\": []}}";
+        return "{\"sType\": 0,\"pX\": " + this.pX.toFixed(1) + ",\"pY\": " + config_1.Global.y + ",\"pZ\": " + this.pZ.toFixed(1) + ",\"rW\": 0.7071,\"rX\": 0.0,\"rY\": 0.7071,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"Wall_1x6_Space\",\"photonData\": {\"photonViewID\": []}}";
     };
     return WallV;
 }(basic_1.Basic));

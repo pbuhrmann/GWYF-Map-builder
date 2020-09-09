@@ -1,4 +1,5 @@
 import { Basic } from "./basic";
+import { Global } from "../config";
 
 export class WallV extends Basic {
 
@@ -13,6 +14,6 @@ export class WallV extends Basic {
     }
 
     toString(){
-        return `{"sType": 0,"pX": ${this.pX.toFixed(1)},"pY": 4.0,"pZ": ${this.pZ.toFixed(1)},"rW": 0.7071,"rX": 0.0,"rY": 0.7071,"rZ": 0.0,"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "Wall_1x6_Space","photonData": {"photonViewID": []}}`;
+        return `{"sType": 0,"pX": ${this.pX.toFixed(1)},"pY": ${Global.y},"pZ": ${this.pZ.toFixed(1)},"rW": 0.7071,"rX": 0.0,"rY": 0.7071,"rZ": 0.0,"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "Wall_1x6_Space","photonData": {"photonViewID": []}}`;
     }
 }

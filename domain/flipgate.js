@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var basic_1 = require("./basic");
+var config_1 = require("../config");
 var FlipGate = (function (_super) {
     __extends(FlipGate, _super);
     function FlipGate(x, y, orientation) {
@@ -38,7 +39,7 @@ var FlipGate = (function (_super) {
         return _this;
     }
     FlipGate.prototype.toString = function () {
-        return "{\"sType\": 0,\"pX\": " + this.pX + ",\"pY\": 4.0,\"pZ\": " + this.pZ + ",\"rW\": " + this.rW + ",\"rX\": " + this.rX + ",\"rY\":" + this.rY + ",\"rZ\": " + this.rZ + ",\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"FlipGate\",\"photonData\": {\"photonViewID\": []}}";
+        return "{\"sType\": 0,\"pX\": " + this.pX + ",\"pY\": " + config_1.Global.y + ",\"pZ\": " + this.pZ + ",\"rW\": " + this.rW + ",\"rX\": " + this.rX + ",\"rY\":" + this.rY + ",\"rZ\": " + this.rZ + ",\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"FlipGate\",\"photonData\": {\"photonViewID\": []}}";
     };
     return FlipGate;
 }(basic_1.Basic));

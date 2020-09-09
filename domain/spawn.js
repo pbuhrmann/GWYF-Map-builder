@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var basic_1 = require("./basic");
+var config_1 = require("../config");
 var Spawn = (function (_super) {
     __extends(Spawn, _super);
     function Spawn(x, y) {
@@ -23,7 +24,7 @@ var Spawn = (function (_super) {
         return _this;
     }
     Spawn.prototype.toString = function () {
-        return "{\"sType\": 4,\"pX\": " + this.pX.toFixed(1) + ",\"pY\": 4.0,\"pZ\": " + this.pZ.toFixed(1) + ",\"rW\": 0.0,\"rX\": 0.0,\"rY\": 1.0,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"SingleSpawn\",\"spawnName\": \"Spawn 1\",\"par\": 99,\"photonData\": {\"photonViewID\": []}}";
+        return "{\"sType\": 4,\"pX\": " + this.pX.toFixed(1) + ",\"pY\": " + config_1.Global.y + ",\"pZ\": " + this.pZ.toFixed(1) + ",\"rW\": 0.0,\"rX\": 0.0,\"rY\": 1.0,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"SingleSpawn\",\"spawnName\": \"Spawn 1\",\"par\": 99,\"photonData\": {\"photonViewID\": []}}";
     };
     return Spawn;
 }(basic_1.Basic));

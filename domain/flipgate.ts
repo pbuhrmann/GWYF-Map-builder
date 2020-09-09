@@ -1,4 +1,5 @@
 import { Basic } from "./basic";
+import { Global } from "../config";
 
 export class FlipGate extends Basic {
 
@@ -25,6 +26,6 @@ export class FlipGate extends Basic {
     }
 
     toString() {
-        return `{"sType": 0,"pX": ${this.pX},"pY": 4.0,"pZ": ${this.pZ},"rW": ${this.rW},"rX": ${this.rX},"rY":${this.rY},"rZ": ${this.rZ},"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "FlipGate","photonData": {"photonViewID": []}}`;
+        return `{"sType": 0,"pX": ${this.pX},"pY": ${Global.y},"pZ": ${this.pZ},"rW": ${this.rW},"rX": ${this.rX},"rY":${this.rY},"rZ": ${this.rZ},"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "FlipGate","photonData": {"photonViewID": []}}`;
     }
 }

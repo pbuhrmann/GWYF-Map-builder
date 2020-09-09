@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var basic_1 = require("./basic");
+var config_1 = require("../config");
 var Floor = (function (_super) {
     __extends(Floor, _super);
     function Floor(x, y) {
@@ -26,7 +27,7 @@ var Floor = (function (_super) {
         return _this;
     }
     Floor.prototype.toString = function () {
-        return "{\"sType\": 0,\"pX\": " + this.pX + ",\"pY\": 4.0,\"pZ\": " + this.pZ + ",\"rW\": 1.0,\"rX\": 0.0,\"rY\": 0.0,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"6x6_Base_Space\",\"photonData\": {\"photonViewID\": []}}";
+        return "{\"sType\": 0,\"pX\": " + this.pX + ",\"pY\": " + config_1.Global.y + ",\"pZ\": " + this.pZ + ",\"rW\": 1.0,\"rX\": 0.0,\"rY\": 0.0,\"rZ\": 0.0,\"sX\": 1.0,\"sY\": 1.0,\"sZ\": 1.0,\"obName\": \"6x6_Base_Space\",\"photonData\": {\"photonViewID\": []}}";
     };
     return Floor;
 }(basic_1.Basic));
