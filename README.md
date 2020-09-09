@@ -9,7 +9,8 @@ npm start
 
 ## How to generate a map
 ```
-node index.js
+node index.js {name} {width} {height} {holes}
+node index.js "My Maze" 20 20 18
 ```
 
 ## Custom Maps Location
