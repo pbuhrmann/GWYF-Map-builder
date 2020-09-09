@@ -3,7 +3,7 @@ exports.__esModule = true;
 var Global = (function () {
     function Global() {
     }
-    Global.z = 50.0;
+    Global.y = 50.0;
     return Global;
 }());
 exports.Global = Global;
