@@ -17,3 +17,11 @@ node index.js "My Maze" 20 20 18
 ```
 C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\CustomLevels
 ```
+
+## Examples
+
+![Maze 01](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/01.jpg)
+
+![Maze 02](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/02.jpg)
+
+![Maze 03](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/03.jpg)
