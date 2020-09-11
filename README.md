@@ -9,8 +9,8 @@ npm start
 
 ## How to generate a map
 ```
-node index.js {name} {width} {height} {holes}
-node index.js "My Maze" 20 20 18
+node index.js {name} {type} {width} {height} {holes}
+node index.js "My Maze" single 20 20 18
 ```
 
 ## Custom Maps Location
@@ -25,3 +25,5 @@ C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\C
 ![Maze 02](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/02.jpg)
 
 ![Maze 03](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/03.jpg)
+
+![Maze 04](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/04.jpg)
