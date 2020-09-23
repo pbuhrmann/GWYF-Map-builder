@@ -1,3 +1,3 @@
 export class Global {
-    static y: number = 50.0;
+    static y: number = 4.0;
 }

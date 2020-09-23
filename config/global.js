@@ -3,7 +3,7 @@ exports.__esModule = true;
 var Global = (function () {
     function Global() {
     }
-    Global.y = 50.0;
+    Global.y = 3.0;
     return Global;
 }());
 exports.Global = Global;
