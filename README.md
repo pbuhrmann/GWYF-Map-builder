@@ -9,7 +9,7 @@ npm start
 
 ## How to generate a map
 ```
-node index.js {name} {type} {width} {height} {holes}
+node index.js {name} {type: single | multi | custom} {width} {height} {holes}
 node index.js "My Maze" single 20 20 18
 ```
 
