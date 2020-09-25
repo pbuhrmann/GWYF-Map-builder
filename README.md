@@ -2,8 +2,14 @@
 
 Generate a random maze
 
+## Requirements
+
+- NodeJS
+- NPM
+
 ## How to compile
 ```
+npm install -g typescript
 npm start
 ```
 
