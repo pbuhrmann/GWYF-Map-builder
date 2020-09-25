@@ -9,7 +9,7 @@ Generate a random maze
 
 ## How to compile
 ```
-npm install -g typescript
+npm install
 npm start
 ```
 
