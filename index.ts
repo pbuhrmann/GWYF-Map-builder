@@ -5,9 +5,9 @@ const args = process.argv.slice(2);
 
 const name = args[0] ? args[0] : 'My Maze';
 const type = args[1] ? args[1] : 'single';
-const width = args[2] ? args[2] : "8";
-const height = args[3] ? args[3] : "8";
-const holes = args[4] ? args[4] : "18";
+const width = args[2] ? args[2] : '8';
+const height = args[3] ? args[3] : '8';
+const holes = args[4] ? args[4] : '18';
 
 const home_location = process.env.HOME || process.env.USERPROFILE;
 
@@ -29,6 +29,12 @@ switch (type) {
         break;
 }
 
-fs.copyFile('Map', `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friends/CustomLevels/${name}/Map`, (err) => {
+const dir = `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friends/CustomLevels/${name}`;
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
+fs.copyFile('Map', dir+'/Map', (err) => {
     if (err) throw err;
 });
