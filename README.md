@@ -27,3 +27,7 @@ C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\C
 ![Maze 03](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/03.jpg)
 
 ![Maze 04](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/04.jpg)
+
+Command line map preview:
+
+![Maze 05](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/05.jpg)
