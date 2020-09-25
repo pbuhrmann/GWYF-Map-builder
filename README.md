@@ -13,6 +13,11 @@ node index.js {name} {type: single | multi | custom} {width} {height} {holes}
 node index.js "My Maze" single 20 20 18
 ```
 
+## What now?
+
+You should be seeing a "Map" file in the project's root directory, copy it to GWYF's `CustomLevels` location.
+
+
 ## Custom Maps Location
 ```
 C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\CustomLevels
