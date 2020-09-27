@@ -1,6 +1,6 @@
 import { Basic, WallH, WallV } from '../domain';
 
-export function generateFromDisplay(display: string) {
+export const generateFromDisplay = (display: string) => {
 
 	const result: Basic[] = [];
 
@@ -16,7 +16,6 @@ export function generateFromDisplay(display: string) {
 		for (let j = 0; j < line.length - 1; j = j + 4) {
 			if (i % 2 == 0) {
 				const sub = line.substr(j, 5);
-				// console.log(sub, i, j);
 
 				if (sub == '+---+') {
 					const wall = new WallH(x, y + 3);
@@ -25,7 +24,6 @@ export function generateFromDisplay(display: string) {
 			}
 			else {
 				const sub = line.substr(j, 5);
-				// console.log(sub, i, j);
 
 				if (sub == '|###|') {
 					const wall1 = new WallV(x - 3, y + 3);

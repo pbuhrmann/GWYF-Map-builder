@@ -29,11 +29,14 @@ switch (type) {
         break;
 }
 
-const dir = `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friensds/CustomLevels/${name}`;
-if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-}
+try {
+    const dir = `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friends/CustomLevels/${name}`;
+    !fs.existsSync(dir) && fs.mkdirSync(dir);
 
-fs.copyFile('Map', dir+'/Map', (err) => {
-    if (err) throw err;
-});
+    fs.copyFile('Map', `${dir}/Map`, err => {
+        if (err) throw err;
+    });
+
+} catch (err) {
+    console.log("\x1b[33m%s\x1b[0m", "WARNING: Unable to copy Map file to the GWYF custom levels directory");
+}
