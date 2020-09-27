@@ -30,7 +30,7 @@ switch (type) {
 }
 
 try {
-    const dir = `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friensds/CustomLevels/${name}`;
+    const dir = `${home_location}/AppData/LocalLow/Team17 Digital Ltd/Golf With Your Friends/CustomLevels/${name}`;
     !fs.existsSync(dir) && fs.mkdirSync(dir);
 
     fs.copyFile('Map', `${dir}/Map`, err => {
