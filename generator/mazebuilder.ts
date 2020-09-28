@@ -16,7 +16,7 @@ export class MazeBuilder {
 
     private x: number;
     private y: number;
-    private map_boilerplate: string = `{levelName: {0}, description: Automatically generated maze, publishedID: 0, music : 8, skybox : 9, editorObjectData : [{1}]`
+    private map_boilerplate: string = `{"levelName": "{0}","description": "Automatically generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [{1}]}`
 
     constructor(name: string, width: number, height: number) {
         this.name = name;
