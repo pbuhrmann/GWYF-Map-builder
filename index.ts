@@ -1,4 +1,4 @@
-import { MazeBuilder } from './generator'
+import { MazeBuilder, TerrainBuilder } from './generator'
 import * as fs from 'fs';
 import * as yargs from 'yargs';
 import { Global } from './config';
@@ -43,10 +43,16 @@ const argv = yargs
         description: 'No spawns, no flagpoles',
         type: 'boolean'
     })
+    .option('evenness', {
+        description: 'Evenness coefficient [1 - 1000]',
+        type: 'number'
+    })
     .alias('name', 'n')
     .alias('type', 't')
     .alias('width', 'w')
     .alias('height', 'h')
+    .alias('basic', 'b')
+    .alias('evenness', 'e')
     .help().argv;
 
 if (argv.type)
@@ -61,7 +67,11 @@ if (argv.walls)
 if (argv.storyHeight)
     Global.storyHeight = argv.storyHeight;
 
+if (argv.evenness)
+    Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 :  argv.evenness <= 1 ? 1 : argv.evenness;
+
 const mazebuilder = new MazeBuilder(argv.name, argv.width, argv.height);
+const terrainbuilder = new TerrainBuilder(argv.name, argv.width, argv.height);
 
 switch (argv.type) {
     case 'single':
@@ -72,6 +82,9 @@ switch (argv.type) {
         break;
     case 'multi':
         fs.writeFileSync('Map', mazebuilder.buildMultiple(argv.holes));         // Multiple Mazes
+        break;
+    case 'terrain':
+        fs.writeFileSync('Map', terrainbuilder.build(argv.width, argv.height)); // Tower
         break;
     case 'custom':
         const custom = fs.readFileSync('CustomMap.txt', 'utf8');                // Build from file

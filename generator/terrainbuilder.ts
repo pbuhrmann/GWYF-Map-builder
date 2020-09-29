@@ -1,0 +1,180 @@
+import { Global } from "../config";
+import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube, FoundationWallH, FoundationWallV } from "../domain";
+import { TrapGenerator } from "./trapgenerator";
+
+// Map limits: 
+// -245X, 245Z TL
+// 245X, 245Z TR
+// -245X, -245Z BL
+// 245X, -245Z BR
+
+export class TerrainBuilder {
+
+    private map_boilerplate: string = `{"levelName": "{0}","description": "Automatically generated map","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [{1}]}`
+
+    private width: number;
+    private height: number;
+    private name: string;
+
+    constructor(name: string, width: number, height: number) {
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    }
+
+    public build(width: number, height: number) {
+        let generated_map: string = this.generateFromGrid(this.generateGrid(width, height));
+        return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
+    }
+
+    private generateFromGrid(grid: number[][]) {
+        const result: Basic[] = [];
+
+        let x = ~~(-this.width * 6 / 2);
+        let y = ~~(this.height * 6 / 2);
+
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid[i].length; j++) {
+                const z: number = grid[i][j];
+
+
+                let neighbour_left: number = null;
+                let neighbour_top: number = null;
+                let neighbour_right: number = null;
+                let neighbour_bottom: number = null;
+
+                if (grid[i] && grid[i][j - 1] !== undefined) {
+                    neighbour_left = grid[i][j - 1];
+                }
+                if (grid[i - 1] && grid[i - 1][j] !== undefined) {
+                    neighbour_top = grid[i - 1][j];
+                }
+                if (grid[i] && grid[i][j + 1] !== undefined) {
+                    neighbour_right = grid[i][j + 1];
+                }
+                if (grid[i + 1] && grid[i + 1][j] !== undefined) {
+                    neighbour_bottom = grid[i + 1][j];
+                }
+
+                if (neighbour_left !== null && neighbour_left != z) {
+                    result.push(new FoundationWallV(x - 3, y, z));
+                    result.push(new WallV(x - 3, y, z));
+                }
+
+                if (neighbour_top !== null && neighbour_top != z) {
+                    result.push(new FoundationWallH(x, y + 3, z));
+                    result.push(new WallH(x, y + 3, z));
+                }
+
+                if (neighbour_right !== null && neighbour_right != z) {
+                    result.push(new FoundationWallV(x + 3, y, z));
+                    result.push(new WallV(x + 3, y, z));
+                }
+
+                if (neighbour_bottom !== null && neighbour_bottom != z) {
+                    result.push(new FoundationWallH(x, y - 3, z));
+                    result.push(new WallH(x, y - 3, z));
+                }
+
+                if (!neighbour_left) {
+                    result.push(new WallV(x - 3, y, z));
+                }
+                if (!neighbour_top) {
+                    result.push(new WallH(x, y + 3, z));
+                }
+                if (!neighbour_right) {
+                    result.push(new WallV(x + 3, y, z));
+                }
+                if (!neighbour_bottom) {
+                    result.push(new WallH(x, y - 3, z));
+                }
+
+                result.push(new Floor(x, y, z));
+
+                x += 6;
+            }
+
+            x = ~~(-this.width * 6 / 2);
+            y -= 6;
+        }
+
+        return result.join(',');
+    }
+
+    private generateGrid(width: number, height: number) {
+        let grid: number[][] = [];
+
+        for (let i = 0; i < width; i++) {
+            grid.push([]);
+
+            for (let j = 0; j < height; j++) {
+                let z: number = this.getTileHeight(i, j, grid);
+
+                grid[i].push(z);
+            }
+            console.log(grid[i].join(','));
+        }
+        return grid;
+    }
+
+    private getTileHeight(i: number, j: number, grid: number[][]): number {
+        if (i === 0 && j === 0) { // First tile
+            return 4;
+        }
+        else {
+            const inc: number = 5;
+            const evennessCoefficient: number = Global.evennessCoefficient;
+
+            let possibleValues: number[] = [];
+            let values: number[] = [];
+
+            let neighbour_top: number;
+            let neighbour_left: number;
+
+
+            if (grid[i - 1] && grid[i - 1][j] !== undefined) {
+                neighbour_top = grid[i - 1][j];
+            }
+
+            if (grid[i] && grid[i][j - 1] !== undefined) {
+                neighbour_left = grid[i][j - 1];
+            }
+
+            if (neighbour_top) {
+                possibleValues.push(neighbour_top + inc, neighbour_top - inc);
+
+                for (let x = 0; x < evennessCoefficient; x++) {
+                    possibleValues.push(neighbour_top);
+                }
+            }
+            if (neighbour_left) {
+                possibleValues.push(neighbour_left + inc, neighbour_left - inc);
+
+                for (let x = 0; x < evennessCoefficient; x++) {
+                    possibleValues.push(neighbour_left);
+                }
+            }
+
+            possibleValues.forEach(x => {
+                if (x >= 4) {
+                    if (neighbour_left && neighbour_top) {
+                        if (Math.abs(x - neighbour_left) <= inc && Math.abs(x - neighbour_top) <= inc) {
+                            values.push(x);
+                        }
+                    } else if (neighbour_left) {
+                        if (Math.abs(x - neighbour_left) <= inc) {
+                            values.push(x);
+                        }
+                    } else if (neighbour_top) {
+                        if (Math.abs(x - neighbour_top) <= inc) {
+                            values.push(x);
+                        }
+                    }
+                }
+            });
+
+            return values[Math.floor(Math.random() * values.length)];
+        }
+    }
+
+}

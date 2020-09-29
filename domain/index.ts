@@ -8,3 +8,5 @@ export * from './flagpole';
 export * from './flipgate';
 export * from './dropdown_tube';
 export * from './ghostspinner';
+export * from './foundationwallH';
+export * from './foundationwallV';

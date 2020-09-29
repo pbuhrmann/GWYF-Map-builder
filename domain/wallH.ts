@@ -3,10 +3,6 @@ import { Global } from "../config";
 
 export class WallH extends Basic {
 
-    width: number = 6;
-    height: number = 1;
-    depth: number = 1;
-
     constructor(x: number, y: number, z: number) {
         super();
         this.pX = x;

@@ -6,4 +6,5 @@ export class Global {
     static storyHeight: number = 10;
     static basic: boolean = false;
     static trapProbability: number = 0.25;
+    static evennessCoefficient: number = 1;
 }
