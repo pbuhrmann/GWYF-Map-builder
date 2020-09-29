@@ -7,13 +7,14 @@ export class WallV extends Basic {
     height: number = 1;
     depth: number = 1;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, z: number) {
         super();
         this.pX = x;
         this.pZ = y;
+        this.pY = z;
     }
 
     toString(){
-        return `{"sType": 0,"pX": ${this.pX},"pY": ${Global.y},"pZ": ${this.pZ},"rW": 0.7071,"rX": 0.0,"rY": 0.7071,"rZ": 0.0,"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "Wall_1x6_Space","photonData": {"photonViewID": []}}`;
+        return `{"sType": 0,"pX": ${this.pX},"pY": ${this.pY},"pZ": ${this.pZ},"rW": 0.7071,"rX": 0.0,"rY": 0.7071,"rZ": 0.0,"sX": 1.0,"sY": 2.0,"sZ": 1.0,"obName": "1x6_Wall_${Global.theme}","photonData": {"photonViewID": []}}`;
     }
 }

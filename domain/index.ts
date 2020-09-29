@@ -6,3 +6,5 @@ export * from './spawn';
 export * from './hole_indent';
 export * from './flagpole';
 export * from './flipgate';
+export * from './dropdown_tube';
+export * from './ghostspinner';
