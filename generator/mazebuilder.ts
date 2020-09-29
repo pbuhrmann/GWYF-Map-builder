@@ -1,4 +1,6 @@
-import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole } from "../domain";
+import { Global } from "../config";
+import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube } from "../domain";
+import { TrapGenerator } from "./trapgenerator";
 
 // Map limits: 
 // -245X, 245Z TL
@@ -16,7 +18,12 @@ export class MazeBuilder {
 
     private x: number;
     private y: number;
+    private z: number;
+    private iteration: number = 0;
+
     private map_boilerplate: string = `{"levelName": "{0}","description": "Automatically generated maze","publishedID": 0,"music": 8,"skybox": 9,"editorObjectData": [{1}]}`
+
+    private trapGenerator: TrapGenerator = new TrapGenerator();
 
     constructor(name: string, width: number, height: number) {
         this.name = name;
@@ -32,6 +39,25 @@ export class MazeBuilder {
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
+    public buildTower(stories: number) {
+        let generated_map = "";
+
+        for (let i = stories; i >= 0; i--) {
+            const maze = this.generateMaze(this.width, this.height);
+            console.log(this.generateDisplay(maze));
+            generated_map += this.generateFromDisplay(this.generateDisplay(maze), Global.y + i * Global.storyHeight);
+
+            this.iteration++;
+            // this.width++;
+            // this.height++;
+
+            if (i > 0)
+                generated_map += ',';
+        }
+
+        return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
+    }
+
     public buildMultiple(holes_total: number) {
         const real_width = this.width * 6;
         const real_height = this.height * 6;
@@ -42,10 +68,11 @@ export class MazeBuilder {
         for (let i = 0; i < holes_total; i++) {
             const maze = this.generateMaze(this.width, this.height);
             console.log(this.generateDisplay(maze));
-            generated_map += this.generateFromDisplay(this.generateDisplay(maze), this.x, this.y);
+            generated_map += this.generateFromDisplay(this.generateDisplay(maze), undefined, this.x, this.y);
 
             this.y += real_height + 3;
             this.x += 3;
+            this.iteration++;
 
             if (this.x + real_width > 240) {
                 this.x = -240;
@@ -75,63 +102,128 @@ export class MazeBuilder {
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
-    generateFromDisplay(display: string, x?: number, y?: number) {
+    generateFromDisplay(display: string, z?: number, x?: number, y?: number) {
         const result: Basic[] = [];
         const lines = display.split('\r\n');
 
         this.x = x !== undefined ? x : ~~(-this.width * 6 / 2);
         this.y = y !== undefined ? y : ~~(this.height * 6 / 2);
+        this.z = z !== undefined ? z : Global.y;
 
-        for (let i = 0; i < lines.length - 1; i++) {
+        for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
 
             this.x = x !== undefined ? x : Math.round(-this.width * 6 / 2);
 
-            if (i == 1) {
-                const spawn = new Spawn(this.x, this.y - 3);
-                result.push(spawn);
-            }
+            // if (i == 1 && !Global.basic) {
+            //     if (this.iteration % 2 == 0) {
+            //         const spawn = new Spawn(this.x, this.y, this.z);
+            //         result.push(spawn);
+            //     }
+            //     else {
+            //         const hole = new HoleIndent(this.x, this.y, this.z);
+            //         const flagpole = new Flagpole(this.x, this.y, this.z);
+            //         result.push(hole, flagpole);
+            //     }
+            // }
 
             for (let j = 0; j < line.length - 1; j = j + 4) {
+                const sub = line.substr(j, 5);
 
-                if (i % 2 == 0) {
-                    const sub = line.substr(j, 5);
-
-                    if (sub == '+---+') {
-                        const wall = new WallH(this.x, this.y - 3);
-                        result.push(wall);
+                if (sub == '+---+') {
+                    let walls: Basic[] = [];
+                    for (let i = 0; i < Global.wallStacks; i++) {
+                        walls.push(new WallH(this.x, this.y, this.z + i + i));
                     }
 
-                    if (i == lines.length - 2 && j == line.length - 5) {
-                        const hole = new HoleIndent(this.x, this.y);
-                        const flagpole = new Flagpole(this.x, this.y);
-                        result.push(hole, flagpole);
-                    } else if (i > 0) {
-                        const floor = new Floor(this.x, this.y);
-                        result.push(floor);
-                    }
-
+                    result.push(...walls);
                 }
-                else {
-                    const sub = line.substr(j, 5);
-
-                    if (sub == '|###|') {
-                        const wall1 = new WallV(this.x - 3, this.y - 3);
-                        const wall2 = new WallV(this.x + 3, this.y - 3);
-                        result.push(wall1, wall2);
-                    }
-                    else if (sub == '|####') {
-                        const wall = new WallV(this.x - 3, this.y - 3);
-                        result.push(wall);
-                    }
-                    else if (sub == '####|') {
-                        const wall = new WallV(this.x + 3, this.y - 3);
-                        result.push(wall);
+                else if (sub == '|###|') {
+                    let walls: Basic[] = [];
+                    for (let i = 0; i < Global.wallStacks; i++) {
+                        walls.push(new WallV(this.x - 3, this.y, this.z + i + i));
                     }
 
+                    result.push(...walls);
+
+                    if (j == line.length - 5) {
+                        let walls: Basic[] = [];
+                        for (let i = 0; i < Global.wallStacks; i++) {
+                            walls.push(new WallV(this.x + 3, this.y, this.z + i + i));
+                        }
+
+                        result.push(...walls);
+                    }
                 }
+                else if (sub == '|####') {
+                    let walls: Basic[] = [];
+                    for (let i = 0; i < Global.wallStacks; i++) {
+                        walls.push(new WallV(this.x - 3, this.y, this.z + i + i));
+                    }
+
+                    result.push(...walls);
+                }
+                else if (sub == '####|') {
+                    let walls: Basic[] = [];
+
+                    for (let i = 0; i < Global.wallStacks; i++) {
+                        walls.push(new WallV(this.x + 3, this.y, this.z + i + i));
+                    }
+
+                    result.push(...walls);
+                }
+
+                if (i % 2 != 0) {
+                    if (i == 1 && j == 0 && !Global.basic) {
+                        // if (this.iteration % 2 == 0) {
+                            const spawn = new Spawn(this.x, this.y, this.z);
+                            const floor = new Floor(this.x, this.y, this.z);
+
+                            result.push(spawn, floor);
+                        // }
+                        // else {
+                        //     const hole = new HoleIndent(this.x, this.y, this.z);
+                        //     const flagpole = new Flagpole(this.x, this.y, this.z);
+                        //     result.push(hole, flagpole);
+                        // }
+                    }
+                    else if (i == lines.length - 2 && j == line.length - 5) {
+                        if (Global.type == 'tower') {
+                            if (this.iteration % 2 == 0) {
+                                const drop = new DropdownTube(this.x, this.y, this.z);
+                                result.push(drop);
+                            }
+                            else {
+                                const floor = new Floor(this.x, this.y, this.z);
+                                result.push(floor);
+                            }
+                        }
+                        else {
+                            if (!Global.basic) {
+                                const hole = new HoleIndent(this.x, this.y, this.z);
+                                const flagpole = new Flagpole(this.x, this.y, this.z);
+                                result.push(hole, flagpole);
+                            }
+                            else {
+                                const floor = new Floor(this.x, this.y, this.z);
+                                result.push(floor);
+                            }
+                        }
+                    } else if (i >= 0) {
+                        const floor = new Floor(this.x, this.y, this.z);
+                        const trap = this.trapGenerator.createTrap(this.x, this.y, this.z);
+
+                        if (trap) {
+                            result.push(trap);
+                        }
+
+                        if (!trap || (trap && !(<any>trap).hasFloor)) {
+                            result.push(floor);
+                        }
+                    }
+                }
+
                 this.x += 6;
-
             }
             this.y -= 3;
         }
@@ -206,7 +298,11 @@ export class MazeBuilder {
                     else
                         line[k] = '#';
 
-            text.push(line.join('') + '\r\n');
+            if (j < m.x * 2) {
+                text.push(line.join('') + '\r\n');
+            } else {
+                text.push(line.join(''));
+            }
         }
 
         return text.join('');
