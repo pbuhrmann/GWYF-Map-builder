@@ -27,16 +27,49 @@ export class TerrainBuilder {
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
-    private generateFromGrid(grid: number[][]) {
+    public buildMultiple(width: number, height: number, total: number) {
+        const real_width = this.width * 6;
+        const real_height = this.height * 6;
+        let iteration = 0;
+        let generated_map = '';
+
+        let min_height: number = -240;
+        let x = -240;
+        let y = 250;
+
+        for (let i = 0; i < total; i++) {
+            generated_map += this.generateFromGrid(this.generateGrid(width, height), x, y);
+
+            // y -= real_height + 3;
+            x += real_width;
+            iteration++;
+
+            if (x + real_width > 240) {
+                x = -240;
+                y = y - real_height;
+            }
+
+            if (y - real_height < min_height) {
+                break;
+            }
+
+            if (i < total - 1) { // omit last ','
+                generated_map += ','
+            }
+        }
+
+        return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
+    }
+
+    private generateFromGrid(grid: number[][], _x?: number, _y?: number) {
         const result: Basic[] = [];
 
-        let x = ~~(-this.width * 6 / 2);
-        let y = ~~(this.height * 6 / 2);
+        let x = _x !== undefined ? _x : ~~(-this.width * 6 / 2);
+        let y = _y !== undefined ? _y : ~~(this.height * 6 / 2);
 
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[i].length; j++) {
                 const z: number = grid[i][j];
-
 
                 let neighbour_left: number = null;
                 let neighbour_top: number = null;
@@ -56,22 +89,22 @@ export class TerrainBuilder {
                     neighbour_bottom = grid[i + 1][j];
                 }
 
-                if (neighbour_left !== null && neighbour_left != z) {
+                if (neighbour_left !== null && neighbour_left < z) {
                     result.push(new FoundationWallV(x - 3, y, z));
                     result.push(new WallV(x - 3, y, z));
                 }
 
-                if (neighbour_top !== null && neighbour_top != z) {
+                if (neighbour_top !== null && neighbour_top < z) {
                     result.push(new FoundationWallH(x, y + 3, z));
                     result.push(new WallH(x, y + 3, z));
                 }
 
-                if (neighbour_right !== null && neighbour_right != z) {
+                if (neighbour_right !== null && neighbour_right < z) {
                     result.push(new FoundationWallV(x + 3, y, z));
                     result.push(new WallV(x + 3, y, z));
                 }
 
-                if (neighbour_bottom !== null && neighbour_bottom != z) {
+                if (neighbour_bottom !== null && neighbour_bottom < z) {
                     result.push(new FoundationWallH(x, y - 3, z));
                     result.push(new WallH(x, y - 3, z));
                 }
@@ -94,7 +127,7 @@ export class TerrainBuilder {
                 x += 6;
             }
 
-            x = ~~(-this.width * 6 / 2);
+            x = _x !== undefined ? _x : ~~(-this.width * 6 / 2);
             y -= 6;
         }
 
@@ -141,14 +174,14 @@ export class TerrainBuilder {
             }
 
             if (neighbour_top) {
-                possibleValues.push(neighbour_top + inc, neighbour_top - inc);
+                possibleValues.push(neighbour_top + inc);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_top);
                 }
             }
             if (neighbour_left) {
-                possibleValues.push(neighbour_left + inc, neighbour_left - inc);
+                possibleValues.push(neighbour_left + inc);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_left);
