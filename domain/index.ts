@@ -10,3 +10,6 @@ export * from './dropdown_tube';
 export * from './ghostspinner';
 export * from './foundationwallH';
 export * from './foundationwallV';
+export * from './ramp2';
+export * from './ramp2foundationwall';
+export * from './ramp2Wall';

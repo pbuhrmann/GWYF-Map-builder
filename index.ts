@@ -68,7 +68,7 @@ if (argv.storyHeight)
     Global.storyHeight = argv.storyHeight;
 
 if (argv.evenness)
-    Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 :  argv.evenness <= 1 ? 1 : argv.evenness;
+    Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 :  argv.evenness <= 0 ? 0 : argv.evenness;
 
 const mazebuilder = new MazeBuilder(argv.name, argv.width, argv.height);
 const terrainbuilder = new TerrainBuilder(argv.name, argv.width, argv.height);

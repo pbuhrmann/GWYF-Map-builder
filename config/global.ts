@@ -5,6 +5,6 @@ export class Global {
     static wallStacks: number = 1;
     static storyHeight: number = 10;
     static basic: boolean = false;
-    static trapProbability: number = 0.25;
+    static trapProbability: number = 0.5;
     static evennessCoefficient: number = 1;
 }

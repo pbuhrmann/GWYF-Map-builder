@@ -1,5 +1,5 @@
 import { Global } from "../config";
-import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube, FoundationWallH, FoundationWallV } from "../domain";
+import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube, FoundationWallH, FoundationWallV, Ramp2, Ramp2FoundationWall, Ramp2Wall } from "../domain";
 import { TrapGenerator } from "./trapgenerator";
 
 // Map limits: 
@@ -15,6 +15,8 @@ export class TerrainBuilder {
     private width: number;
     private height: number;
     private name: string;
+
+    private maxZ: number = 0;
 
     constructor(name: string, width: number, height: number) {
         this.name = name;
@@ -89,41 +91,86 @@ export class TerrainBuilder {
                     neighbour_bottom = grid[i + 1][j];
                 }
 
-                if (neighbour_left !== null && neighbour_left < z) {
-                    result.push(new FoundationWallV(x - 3, y, z));
-                    result.push(new WallV(x - 3, y, z));
-                }
-
-                if (neighbour_top !== null && neighbour_top < z) {
-                    result.push(new FoundationWallH(x, y + 3, z));
-                    result.push(new WallH(x, y + 3, z));
-                }
-
-                if (neighbour_right !== null && neighbour_right < z) {
-                    result.push(new FoundationWallV(x + 3, y, z));
-                    result.push(new WallV(x + 3, y, z));
-                }
-
-                if (neighbour_bottom !== null && neighbour_bottom < z) {
+                if (neighbour_top !== null && neighbour_top > z) {
+                    result.push(new Ramp2(x, y, z, 'TD'));
+                    result.push(new Ramp2FoundationWall(x - 3, y, z, 'TD'));
+                    result.push(new Ramp2FoundationWall(x + 3, y, z, 'TD'));
                     result.push(new FoundationWallH(x, y - 3, z));
-                    result.push(new WallH(x, y - 3, z));
+                    // result.push(new Ramp2Wall(x - 3, y, z, 'TD'));
+                    // result.push(new Ramp2Wall(x + 3, y, z, 'TD'));
+                    // result.push(new WallH(x, y - 3, z));
                 }
+                else if (neighbour_left !== null && neighbour_left > z) {
+                    result.push(new Ramp2(x, y, z, 'LR'));
+                    result.push(new Ramp2FoundationWall(x, y - 3, z, 'LR'));
+                    result.push(new Ramp2FoundationWall(x, y + 3, z, 'LR'));
+                    result.push(new FoundationWallV(x + 3, y, z));
+                    // result.push(new Ramp2Wall(x, y - 3, z, 'LR'));
+                    // result.push(new Ramp2Wall(x, y + 3, z, 'LR'));
+                    // result.push(new WallV(x + 3, y, z));
+                }
+                else if (neighbour_bottom !== null && neighbour_bottom > z) {
+                    result.push(new Ramp2(x, y, z, 'DT'));
+                    result.push(new Ramp2FoundationWall(x - 3, y, z, 'DT'));
+                    result.push(new Ramp2FoundationWall(x + 3, y, z, 'DT'));
+                    result.push(new FoundationWallH(x, y + 3, z));
+                    // result.push(new Ramp2Wall(x - 3, y, z, 'DT'));
+                    // result.push(new Ramp2Wall(x + 3, y, z, 'DT'));
+                    // result.push(new WallH(x, y + 3, z));
+                }
+                else if (neighbour_right !== null && neighbour_right > z) {
+                    result.push(new Ramp2(x, y, z, 'RL'));
+                    result.push(new Ramp2FoundationWall(x, y - 3, z, 'RL'));
+                    result.push(new Ramp2FoundationWall(x, y + 3, z, 'RL'));
+                    result.push(new FoundationWallV(x - 3, y, z));
+                    // result.push(new Ramp2Wall(x, y - 3, z, 'RL'));
+                    // result.push(new Ramp2Wall(x, y + 3, z, 'RL'));
+                    // result.push(new WallV(x - 3, y, z));
+                }
+                else {
 
-                if (!neighbour_left) {
-                    result.push(new WallV(x - 3, y, z));
-                }
-                if (!neighbour_top) {
-                    result.push(new WallH(x, y + 3, z));
-                }
-                if (!neighbour_right) {
-                    result.push(new WallV(x + 3, y, z));
-                }
-                if (!neighbour_bottom) {
-                    result.push(new WallH(x, y - 3, z));
-                }
+                    // if (neighbour_left !== null && neighbour_left < z) {
+                    //     result.push(new FoundationWallV(x - 3, y, z));
+                    //     result.push(new WallV(x - 3, y, z));
+                    // }
 
-                result.push(new Floor(x, y, z));
+                    // if (neighbour_top !== null && neighbour_top < z) {
+                    //     result.push(new FoundationWallH(x, y + 3, z));
+                    //     result.push(new WallH(x, y + 3, z));
+                    // }
 
+                    // if (neighbour_right !== null && neighbour_right < z) {
+                    //     result.push(new FoundationWallV(x + 3, y, z));
+                    //     result.push(new WallV(x + 3, y, z));
+                    // }
+
+                    // if (neighbour_bottom !== null && neighbour_bottom < z) {
+                    //     result.push(new FoundationWallH(x, y - 3, z));
+                    //     result.push(new WallH(x, y - 3, z));
+                    // }
+
+                    if (!neighbour_left) {
+                        result.push(new WallV(x - 3, y, z));
+                    }
+                    if (!neighbour_top) {
+                        result.push(new WallH(x, y + 3, z));
+                    }
+                    if (!neighbour_right) {
+                        result.push(new WallV(x + 3, y, z));
+                    }
+                    if (!neighbour_bottom) {
+                        result.push(new WallH(x, y - 3, z));
+                    }
+
+                    // if (Math.random() > 0.965 && z > 6) {
+                    //     const hole = new HoleIndent(x, y, z);
+                    //     const flagpole = new Flagpole(x, y, z);
+                    //     result.push(hole, flagpole);
+                    // }
+                    // else {
+                    result.push(new Floor(x, y, z));
+                    // }
+                }
                 x += 6;
             }
 
@@ -137,11 +184,12 @@ export class TerrainBuilder {
     private generateGrid(width: number, height: number) {
         let grid: number[][] = [];
 
-        for (let i = 0; i < width; i++) {
+        for (let i = 0; i < height; i++) {
             grid.push([]);
 
-            for (let j = 0; j < height; j++) {
+            for (let j = 0; j < width; j++) {
                 let z: number = this.getTileHeight(i, j, grid);
+                this.maxZ = z > this.maxZ ? z : this.maxZ;
 
                 grid[i].push(z);
             }
@@ -155,7 +203,7 @@ export class TerrainBuilder {
             return 4;
         }
         else {
-            const inc: number = 5;
+            const inc: number = 2;
             const evennessCoefficient: number = Global.evennessCoefficient;
 
             let possibleValues: number[] = [];
@@ -174,14 +222,14 @@ export class TerrainBuilder {
             }
 
             if (neighbour_top) {
-                possibleValues.push(neighbour_top + inc);
+                possibleValues.push(neighbour_left - inc, neighbour_top + inc);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_top);
                 }
             }
             if (neighbour_left) {
-                possibleValues.push(neighbour_left + inc);
+                possibleValues.push(neighbour_left - inc, neighbour_left + inc);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_left);
