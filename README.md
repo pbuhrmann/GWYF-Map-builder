@@ -31,6 +31,14 @@ C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\C
 
 ## Examples
 
+![Maze 06](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/06.jpg)
+
+![Maze 07](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/07.jpg)
+
+![Maze 08](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/08.jpg)
+
+![Maze 09](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/09.jpg)
+
 ![Maze 01](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/01.jpg)
 
 ![Maze 02](https://raw.githubusercontent.com/penrique/GWYF-Maze-builder/master/pics/02.jpg)
