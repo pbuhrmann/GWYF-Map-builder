@@ -1,6 +1,5 @@
 import { Global } from "../config";
-import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube, FoundationWallH, FoundationWallV, Ramp2, Ramp2FoundationWall, Ramp2Wall } from "../domain";
-import { TrapGenerator } from "./trapgenerator";
+import { Basic, WallH, WallV, Floor, Spawn, Hole, Flagpole, DropdownTube, FoundationWallH, FoundationWallV, Ramp2, Ramp2FoundationWall, Ramp2Wall, SRamp2, SRamp2FoundationWall } from "../domain";
 
 // Map limits: 
 // -245X, 245Z TL
@@ -17,6 +16,7 @@ export class TerrainBuilder {
     private name: string;
 
     private maxZ: number = 0;
+    private spawns: number = 0;
 
     constructor(name: string, width: number, height: number) {
         this.name = name;
@@ -26,6 +26,11 @@ export class TerrainBuilder {
 
     public build(width: number, height: number) {
         let generated_map: string = this.generateFromGrid(this.generateGrid(width, height));
+        return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
+    }
+
+    public buildCustom(width: number, height: number) {
+        let generated_map: string = this.generateFromGrid([]);
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
@@ -131,44 +136,48 @@ export class TerrainBuilder {
 
                     if (neighbour_left !== null && neighbour_left < z) {
                         result.push(new FoundationWallV(x - 3, y, z));
-                        result.push(new WallV(x - 3, y, z));
+                        // result.push(new WallV(x - 3, y, z));
                     }
 
                     if (neighbour_top !== null && neighbour_top < z) {
                         result.push(new FoundationWallH(x, y + 3, z));
-                        result.push(new WallH(x, y + 3, z));
+                        // result.push(new WallH(x, y + 3, z));
                     }
 
                     if (neighbour_right !== null && neighbour_right < z) {
                         result.push(new FoundationWallV(x + 3, y, z));
-                        result.push(new WallV(x + 3, y, z));
+                        // result.push(new WallV(x + 3, y, z));
                     }
 
                     if (neighbour_bottom !== null && neighbour_bottom < z) {
                         result.push(new FoundationWallH(x, y - 3, z));
-                        result.push(new WallH(x, y - 3, z));
+                        // result.push(new WallH(x, y - 3, z));
                     }
 
                     if (!neighbour_left) {
-                        result.push(new WallV(x - 3, y, z));
+                        // result.push(new WallV(x - 3, y, z));
                     }
                     if (!neighbour_top) {
-                        result.push(new WallH(x, y + 3, z));
+                        // result.push(new WallH(x, y + 3, z));
                     }
                     if (!neighbour_right) {
-                        result.push(new WallV(x + 3, y, z));
+                        // result.push(new WallV(x + 3, y, z));
                     }
                     if (!neighbour_bottom) {
-                        result.push(new WallH(x, y - 3, z));
+                        // result.push(new WallH(x, y - 3, z));
                     }
 
-                    // if (Math.random() > 0.965 && z > 6) {
-                    //     const hole = new HoleIndent(x, y, z);
+                    // if (Math.random() > 0.92) {
+                    //     const hole = new Hole(x, y, z);
                     //     const flagpole = new Flagpole(x, y, z);
                     //     result.push(hole, flagpole);
                     // }
                     // else {
-                    result.push(new Floor(x, y, z));
+                    //     if (Math.random() > 0.98 && this.spawns < 18) {
+                    //         result.push(new Spawn(x, y, z + 1));
+                    //         this.spawns++;
+                    //     }
+                        result.push(new Floor(x, y, z));
                     // }
                 }
                 x += 6;
@@ -188,7 +197,7 @@ export class TerrainBuilder {
             grid.push([]);
 
             for (let j = 0; j < width; j++) {
-                let z: number = this.getTileHeight(i, j, grid);
+                let z: number = this.getTileHeight(grid, i, j);
                 this.maxZ = z > this.maxZ ? z : this.maxZ;
 
                 grid[i].push(z);
@@ -198,7 +207,7 @@ export class TerrainBuilder {
         return grid;
     }
 
-    private getTileHeight(i: number, j: number, grid: number[][]): number {
+    private getTileHeight(grid: number[][], i: number, j: number): number {
         if (i === 0 && j === 0) { // First tile
             return 4;
         }
@@ -222,14 +231,14 @@ export class TerrainBuilder {
             }
 
             if (neighbour_top) {
-                possibleValues.push(neighbour_left - hv, neighbour_top + hv);
+                possibleValues.push(neighbour_top + hv);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_top);
                 }
             }
             if (neighbour_left) {
-                possibleValues.push(neighbour_left - hv, neighbour_left + hv);
+                possibleValues.push(neighbour_left + hv);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_left);

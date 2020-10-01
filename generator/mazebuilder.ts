@@ -1,5 +1,5 @@
 import { Global } from "../config";
-import { Basic, WallH, WallV, Floor, Spawn, HoleIndent, Flagpole, DropdownTube } from "../domain";
+import { Basic, WallH, WallV, Floor, Spawn, Hole, Flagpole, DropdownTube } from "../domain";
 import { TrapGenerator } from "./trapgenerator";
 
 // Map limits: 
@@ -200,7 +200,7 @@ export class MazeBuilder {
                         }
                         else {
                             if (!Global.basic) {
-                                const hole = new HoleIndent(this.x, this.y, this.z);
+                                const hole = new Hole(this.x, this.y, this.z);
                                 const flagpole = new Flagpole(this.x, this.y, this.z);
                                 result.push(hole, flagpole);
                             }
