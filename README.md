@@ -1,6 +1,6 @@
-# Golf With Your Friends Maze Builder
+# Golf With Your Friends Map Builder
 
-Generate a random maze
+Procedurally generated maps
 
 ## Requirements
 
