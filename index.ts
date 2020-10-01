@@ -47,13 +47,19 @@ const argv = yargs
         description: 'Evenness coefficient [1 - 1000]',
         type: 'number'
     })
+    .option('heightVariaton', {
+        description: 'Tile Height variation [0 - 5]',
+        type: 'number'
+    })
     .alias('name', 'n')
     .alias('type', 't')
     .alias('width', 'w')
     .alias('height', 'h')
     .alias('basic', 'b')
     .alias('evenness', 'e')
+    .alias('heightVariaton', 'v')
     .help().argv;
+
 
 if (argv.type)
     Global.type = argv.type ? argv.type : 'single';
@@ -68,7 +74,11 @@ if (argv.storyHeight)
     Global.storyHeight = argv.storyHeight;
 
 if (argv.evenness)
-    Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 :  argv.evenness <= 0 ? 0 : argv.evenness;
+    Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 : argv.evenness <= 0 ? 0 : argv.evenness;
+
+if (argv.heightVariaton)
+    Global.heightVariaton = argv.heightVariaton;// >= 5 ? 5 : argv.heightVariaton <= 0 ? 0 : argv.heightVariaton;
+
 
 const mazebuilder = new MazeBuilder(argv.name, argv.width, argv.height);
 const terrainbuilder = new TerrainBuilder(argv.name, argv.width, argv.height);

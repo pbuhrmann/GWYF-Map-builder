@@ -129,25 +129,25 @@ export class TerrainBuilder {
                 }
                 else {
 
-                    // if (neighbour_left !== null && neighbour_left < z) {
-                    //     result.push(new FoundationWallV(x - 3, y, z));
-                    //     result.push(new WallV(x - 3, y, z));
-                    // }
+                    if (neighbour_left !== null && neighbour_left < z) {
+                        result.push(new FoundationWallV(x - 3, y, z));
+                        result.push(new WallV(x - 3, y, z));
+                    }
 
-                    // if (neighbour_top !== null && neighbour_top < z) {
-                    //     result.push(new FoundationWallH(x, y + 3, z));
-                    //     result.push(new WallH(x, y + 3, z));
-                    // }
+                    if (neighbour_top !== null && neighbour_top < z) {
+                        result.push(new FoundationWallH(x, y + 3, z));
+                        result.push(new WallH(x, y + 3, z));
+                    }
 
-                    // if (neighbour_right !== null && neighbour_right < z) {
-                    //     result.push(new FoundationWallV(x + 3, y, z));
-                    //     result.push(new WallV(x + 3, y, z));
-                    // }
+                    if (neighbour_right !== null && neighbour_right < z) {
+                        result.push(new FoundationWallV(x + 3, y, z));
+                        result.push(new WallV(x + 3, y, z));
+                    }
 
-                    // if (neighbour_bottom !== null && neighbour_bottom < z) {
-                    //     result.push(new FoundationWallH(x, y - 3, z));
-                    //     result.push(new WallH(x, y - 3, z));
-                    // }
+                    if (neighbour_bottom !== null && neighbour_bottom < z) {
+                        result.push(new FoundationWallH(x, y - 3, z));
+                        result.push(new WallH(x, y - 3, z));
+                    }
 
                     if (!neighbour_left) {
                         result.push(new WallV(x - 3, y, z));
@@ -203,7 +203,7 @@ export class TerrainBuilder {
             return 4;
         }
         else {
-            const inc: number = 2;
+            const hv: number = Global.heightVariaton;
             const evennessCoefficient: number = Global.evennessCoefficient;
 
             let possibleValues: number[] = [];
@@ -222,14 +222,14 @@ export class TerrainBuilder {
             }
 
             if (neighbour_top) {
-                possibleValues.push(neighbour_left - inc, neighbour_top + inc);
+                possibleValues.push(neighbour_left - hv, neighbour_top + hv);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_top);
                 }
             }
             if (neighbour_left) {
-                possibleValues.push(neighbour_left - inc, neighbour_left + inc);
+                possibleValues.push(neighbour_left - hv, neighbour_left + hv);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_left);
@@ -239,15 +239,15 @@ export class TerrainBuilder {
             possibleValues.forEach(x => {
                 if (x >= 4) {
                     if (neighbour_left && neighbour_top) {
-                        if (Math.abs(x - neighbour_left) <= inc && Math.abs(x - neighbour_top) <= inc) {
+                        if (Math.abs(x - neighbour_left) <= hv && Math.abs(x - neighbour_top) <= hv) {
                             values.push(x);
                         }
                     } else if (neighbour_left) {
-                        if (Math.abs(x - neighbour_left) <= inc) {
+                        if (Math.abs(x - neighbour_left) <= hv) {
                             values.push(x);
                         }
                     } else if (neighbour_top) {
-                        if (Math.abs(x - neighbour_top) <= inc) {
+                        if (Math.abs(x - neighbour_top) <= hv) {
                             values.push(x);
                         }
                     }

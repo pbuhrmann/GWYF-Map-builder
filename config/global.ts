@@ -7,4 +7,5 @@ export class Global {
     static basic: boolean = false;
     static trapProbability: number = 0.5;
     static evennessCoefficient: number = 1;
+    static heightVariaton: number = 2;
 }
