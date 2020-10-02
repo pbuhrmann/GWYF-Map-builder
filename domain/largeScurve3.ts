@@ -30,6 +30,6 @@ export class LargeSCurve3 extends Basic {
     }
 
     toString() {
-        return `{"sType": 0,"pX": ${this.pX},"pY": ${this.pY-1},"pZ": ${this.pZ},"rW": ${this.rW},"rX": 0.0,"rY": ${this.rY},"rZ": 0.0,"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "Large_SCurve_Forest","photonData": {"photonViewID": []}}`;
+        return `{"sType": 0,"pX": ${this.pX},"pY": ${this.pY},"pZ": ${this.pZ},"rW": ${this.rW},"rX": 0.0,"rY": ${this.rY},"rZ": 0.0,"sX": 1.0,"sY": 1.0,"sZ": 1.0,"obName": "Large_SCurve_Forest","photonData": {"photonViewID": []}}`;
     }
 }
