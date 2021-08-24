@@ -15,8 +15,13 @@ npm start
 
 ## How to generate a map
 ```
-node index.js {name} {type: single | multi | custom} {width} {height} {holes}
-node index.js "My Maze" single 10 10 1
+node index.js {name} -t {type: single | multi | custom} -w {width} -h {height}
+node index.js -n "My Maze" -t single -w 10 -h 10
+```
+
+## For help
+```
+node index.js --help
 ```
 
 ## What now?
@@ -24,7 +29,7 @@ node index.js "My Maze" single 10 10 1
 You should be seeing a "Map" file in the project's root directory, copy it to GWYF's `CustomLevels` location.
 
 
-## Custom Maps Location
+## Custom Maps Location (Move the file manually)
 ```
 C:\Users\{USERNAME}\AppData\LocalLow\Team17 Digital Ltd\Golf With Your Friends\CustomLevels
 ```
