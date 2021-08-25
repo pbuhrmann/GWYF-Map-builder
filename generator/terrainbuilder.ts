@@ -1,6 +1,6 @@
 import { Global } from "../config";
 import { Basic, WallH, WallV, Floor, Spawn, Hole, Flagpole, DropdownTube, FoundationWallH, FoundationWallV, Ramp2, Ramp2FoundationWall, Ramp2Wall, SRamp2, SRamp2FoundationWall, Water } from "../domain";
-
+import { customTerrain } from '../customTerrain/custom';
 // Map limits: 
 // -245X, 245Z TL
 // 245X, 245Z TR
@@ -29,8 +29,22 @@ export class TerrainBuilder {
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
-    public buildCustom(width: number, height: number) {
-        let generated_map: string = this.generateFromGrid([]);
+    public buildCustom() {
+        let maxLength = 0;
+        this.height = customTerrain.length;
+        for (let i = 0; i < customTerrain.length; i++) {
+            const arrayLength = customTerrain[i].length;
+
+            if (arrayLength > maxLength)
+                maxLength = arrayLength;
+        }
+
+        this.width = maxLength;
+
+
+        let generated_map: string = this.generateFromGrid(customTerrain);
+
+        console.log("Custom terrain map generated!");
         return this.map_boilerplate.replace("{0}", this.name).replace("{1}", generated_map);
     }
 
@@ -97,7 +111,10 @@ export class TerrainBuilder {
                 }
 
                 if (z == 4) {
-                    result.push(new Water(x, y, z));
+                    if (Global.water > 0)
+                        result.push(new Water(x, y, z));
+                    else
+                        result.push(new Floor(x, y, z));
                 }
                 else if (neighbour_top !== null && neighbour_top > z) {
                     result.push(new Ramp2(x, y, z, 'TD'));
@@ -183,7 +200,7 @@ export class TerrainBuilder {
                 if (!neighbour_bottom) {
                     result.push(new WallH(x, y - 3, z));
                 }
-                
+
                 x += 6;
             }
 
@@ -216,7 +233,7 @@ export class TerrainBuilder {
             return 4;
         }
         else {
-            const hv: number = Global.heightVariaton;
+            const steepness: number = Global.steepness;
             const evennessCoefficient: number = Global.evennessCoefficient;
 
             let possibleValues: number[] = [];
@@ -235,14 +252,14 @@ export class TerrainBuilder {
             }
 
             if (neighbour_top) {
-                possibleValues.push(neighbour_top - hv, neighbour_top + hv);
+                possibleValues.push(neighbour_top - steepness, neighbour_top + steepness);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_top);
                 }
             }
             if (neighbour_left) {
-                possibleValues.push(neighbour_left - hv, neighbour_left + hv);
+                possibleValues.push(neighbour_left - steepness, neighbour_left + steepness);
 
                 for (let x = 0; x < evennessCoefficient; x++) {
                     possibleValues.push(neighbour_left);
@@ -252,15 +269,15 @@ export class TerrainBuilder {
             possibleValues.forEach(x => {
                 if (x >= 4) {
                     if (neighbour_left && neighbour_top) {
-                        if (Math.abs(x - neighbour_left) <= hv && Math.abs(x - neighbour_top) <= hv) {
+                        if (Math.abs(x - neighbour_left) <= steepness && Math.abs(x - neighbour_top) <= steepness) {
                             values.push(x);
                         }
                     } else if (neighbour_left) {
-                        if (Math.abs(x - neighbour_left) <= hv) {
+                        if (Math.abs(x - neighbour_left) <= steepness) {
                             values.push(x);
                         }
                     } else if (neighbour_top) {
-                        if (Math.abs(x - neighbour_top) <= hv) {
+                        if (Math.abs(x - neighbour_top) <= steepness) {
                             values.push(x);
                         }
                     }

@@ -12,7 +12,7 @@ const argv = yargs
         type: 'string'
     })
     .option('type', {
-        description: 'single, tower, multi, custom (load from file)',
+        description: 'single, tower, multi, terrain, custom (load from file), customTerrain (load from ./customTerrain/custom.ts file)',
         type: 'string'
     })
     .option('width', {
@@ -24,7 +24,7 @@ const argv = yargs
         type: 'number'
     })
     .option('holes', {
-        description: 'Number of holes',
+        description: 'Number of holes (Type: must be "multi")',
         type: 'number'
     })
     .option('stories', {
@@ -36,7 +36,7 @@ const argv = yargs
         type: 'number'
     })
     .option('storyHeight', {
-        description: 'Height of each story (Tower only)',
+        description: 'Height of each story (Type: must be "tower")',
         type: 'number'
     })
     .option('basic', {
@@ -44,11 +44,19 @@ const argv = yargs
         type: 'boolean'
     })
     .option('evenness', {
-        description: 'Evenness coefficient [1 - 1000]',
+        description: 'Evenness coefficient [1 - 1000] (Lower values means rougher terrain)',
         type: 'number'
     })
-    .option('heightVariaton', {
-        description: 'Tile Height variation [0 - 5]',
+    .option('steepness', {
+        description: 'Terrain will have higher slopes [0 - 5]',
+        type: 'number'
+    })
+    .option('traps', {
+        description: 'Odds of spawning a trap [0.0 - 1.0] (Doesn\'t work with type=terrain)',
+        type: 'number'
+    })
+    .option('water', {
+        description: 'Add water [0,1] (Type: must be "terrain")',
         type: 'number'
     })
     .alias('name', 'n')
@@ -57,7 +65,7 @@ const argv = yargs
     .alias('height', 'h')
     .alias('basic', 'b')
     .alias('evenness', 'e')
-    .alias('heightVariaton', 'v')
+    .alias('steepness', 's')
     .help().argv;
 
 
@@ -73,12 +81,17 @@ if (argv.walls)
 if (argv.storyHeight)
     Global.storyHeight = argv.storyHeight;
 
-if (argv.evenness)
+if (argv.evenness !== undefined)
     Global.evennessCoefficient = argv.evenness >= 1000 ? 1000 : argv.evenness <= 0 ? 0 : argv.evenness;
 
-if (argv.heightVariaton)
-    Global.heightVariaton = argv.heightVariaton;// >= 5 ? 5 : argv.heightVariaton <= 0 ? 0 : argv.heightVariaton;
+if (argv.steepness)
+    Global.steepness = argv.steepness;// >= 5 ? 5 : argv.steepness <= 0 ? 0 : argv.steepness;
 
+if (argv.traps !== undefined)
+    Global.trapProbability = argv.traps >= 1 ? 1 : argv.traps <= 0 ? 0 : argv.traps;
+
+if (argv.water)
+    Global.water = argv.water;
 
 const mazebuilder = new MazeBuilder(argv.name, argv.width, argv.height);
 const terrainbuilder = new TerrainBuilder(argv.name, argv.width, argv.height);
@@ -94,11 +107,14 @@ switch (argv.type) {
         fs.writeFileSync('Map', mazebuilder.buildMultiple(argv.holes));         // Multiple Mazes
         break;
     case 'terrain':
-        fs.writeFileSync('Map', terrainbuilder.build(argv.width, argv.height)); // Tower
+        fs.writeFileSync('Map', terrainbuilder.build(argv.width, argv.height)); // Terrain
         break;
     case 'custom':
         const custom = fs.readFileSync('CustomMap.txt', 'utf8');                // Build from file
         fs.writeFileSync('Map', mazebuilder.buildFromFile(custom));             // Build from file
+        break;
+    case 'customTerrain':
+        fs.writeFileSync('Map', terrainbuilder.buildCustom());                  // Custom Terrain
         break;
     default:
         fs.writeFileSync('Map', mazebuilder.build());

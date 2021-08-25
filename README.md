@@ -15,8 +15,23 @@ npm start
 
 ## How to generate a map
 ```
-node index.js {name} -t {type: single | multi | custom} -w {width} -h {height}
+node index.js {name} -t {single | tower | multi | terrain | custom} -w {width} -h {height} --traps {0.0 - 1.0}
 node index.js -n "My Maze" -t single -w 10 -h 10
+```
+## Examples
+```
+node index.js -n "My Terrain" -t terrain -w 32 -h 32 -s 2 -e 60
+node index.js -n "My Terrain with water" -t terrain -w 32 -h 32 -s 2 -e 5 --water 1
+
+node index.js -n "My Tower" -t tower -w 8 -h 8 --stories 6 --traps 0.1
+
+node index.js -n "My Multi" -t multi -w 8 -h 8 --holes 5 --traps 0.1 --walls 2
+
+## Custom type will search for "CustomMap.txt" and load whatever's in it
+node index.js -n "My Custom" -t custom --traps 0
+
+## CustomTerrain type will search for "./customTerrain/custom.ts" and load whatever's in it
+node index.js -n "My Custom Terrain" -t customTerrain
 ```
 
 ## For help
