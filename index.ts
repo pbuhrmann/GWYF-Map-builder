@@ -75,7 +75,7 @@ if (argv.type)
 if (argv.basic)
     Global.basic = argv.basic ? true : false;
 
-if (argv.walls)
+if (argv.walls !== undefined)
     Global.wallStacks = argv.walls;
 
 if (argv.storyHeight)

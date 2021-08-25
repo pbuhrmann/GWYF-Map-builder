@@ -22,6 +22,7 @@ node index.js -n "My Maze" -t single -w 10 -h 10
 ```
 node index.js -n "My Terrain" -t terrain -w 32 -h 32 -s 2 -e 60
 node index.js -n "My Terrain with water" -t terrain -w 32 -h 32 -s 2 -e 5 --water 1
+node index.js -n "My Terrain with no walls" -t terrain -w 32 -h 32 -s 2 -e 5 --walls 0
 
 node index.js -n "My Tower" -t tower -w 8 -h 8 --stories 6 --traps 0.1
 
